@@ -1,1 +1,59 @@
-<p>list-appointments works!</p>
+<div class="container my-5">
+  <h2 class="mb-4 text-center">Appointments</h2>
+
+  <div class="d-flex justify-content-between mb-3">
+    <div>
+      <button class="btn btn-success me-2">
+        Export to Excel
+      </button>
+      <button class="btn btn-danger">
+        Export to PDF
+      </button>
+    </div>
+  </div>
+
+
+  @if (appointments.length > 0) {
+  <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+      <thead class="table-primary">
+      <tr>
+        <th>ID</th>
+        <th>Patient Name</th>
+        <th>Animal Type</th>
+        <th>Owner Name</th>
+        <th>Owner Surname</th>
+        <th>Appointment Date & Time</th>
+        <th>Appointment Duration</th>
+        <th class="text-center">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Example row -->
+      @for (appointment of appointments; track appointment.appointmentId) {
+      <tr>
+        <td>{{appointment.appointmentId}}</td>
+        <td>{{appointment.patientName}}</td>
+        <td>{{appointment.animalType}}</td>
+        <td>{{appointment.ownerName}}</td>
+        <td>{{appointment.ownerSurname}}</td>
+        <td>{{appointment.appointmentDate}} {{appointment.appointmentTime}}</td>
+        <td>{{appointment.appointmentDuration}}</td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-info me-1">View</button>
+          <button class="btn btn-sm btn-warning me-1">Edit</button>
+          <button class="btn btn-sm btn-danger">Delete</button>
+        </td>
+      </tr>
+      }
+
+      </tbody>
+    </table>
+
+  </div>
+  } @else {
+    <div style="display: flex; width: 100%; justify-content: center; align-items: center; padding: 0; ">
+      <h2 class="mb-4" style="color:red; "> No Appointments</h2>
+    </div>
+  }
+</div>
