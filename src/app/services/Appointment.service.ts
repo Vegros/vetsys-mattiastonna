@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import {Observable} from 'rxjs';
 import {Appointment} from '../dto/Appointment.dto';
 import {observableToBeFn} from 'rxjs/internal/testing/TestScheduler';
+import {AppointmentAddUpdate} from '../dto/Appointment-Add-Update.dto';
 
 @Injectable({
   providedIn: "root"
@@ -23,8 +24,11 @@ export class AppointmentService {
   }
 
   getAppointments(): Observable<Appointment[]> {
-    const token = localStorage.getItem('token');
     return this.httpClient.get<Appointment[]>(this.endpoint, this.httpHeader);
   }
+  addAppointment(appointment: AppointmentAddUpdate): Observable<Appointment> {
+    return this.httpClient.post<Appointment>(this.endpoint, appointment,  this.httpHeader);
+  }
+
 
 }
