@@ -1,0 +1,71 @@
+@if(appointment){
+<div class="container mt-5">
+  <div class="card shadow rounded-4">
+    <div class="card-header bg-info text-white fw-semibold fs-5">
+      Appointment Details
+    </div>
+
+    <div class="card-body p-4">
+      <div class="row g-3">
+        <!-- Patient Info -->
+        <div class="col-md-6">
+          <label class="fw-semibold">Patient Name</label>
+          <div>{{ appointment.patientName }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-semibold">Animal Type</label>
+          <div>{{ appointment.animalType }}</div>
+        </div>
+
+        <!-- Owner Info -->
+        <div class="col-md-6">
+          <label class="fw-semibold">Owner Name</label>
+          <div>{{ appointment.ownerName }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-semibold">Owner Surname</label>
+          <div>{{ appointment.ownerSurname }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-semibold">Owner Contact Number</label>
+          <div>{{ appointment.ownerContactNumber }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-semibold">Owner ID Card Number</label>
+          <div>{{ appointment.ownerIdCardNumber }}</div>
+        </div>
+
+        <!-- Appointment Info -->
+        <div class="col-md-6">
+          <label class="fw-semibold">Appointment Date</label>
+          <div>{{ appointment.appointmentDate }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-semibold">Appointment Time</label>
+          <div>{{ appointment.appointmentTime }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-semibold">Appointment Duration</label>
+          <div>{{ appointment.appointmentDuration }} minutes</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fw-semibold">Reason for Appointment</label>
+          <div>{{ appointment.reasonForAppointment }}</div>
+        </div>
+
+        <div class="col-12">
+          <label class="fw-semibold">Vet Notes</label>
+          <div>{{ appointment.vetNotes }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

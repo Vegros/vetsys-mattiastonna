@@ -29,6 +29,9 @@ export class AppointmentService {
   addAppointment(appointment: AppointmentAddUpdate): Observable<Appointment> {
     return this.httpClient.post<Appointment>(this.endpoint, appointment,  this.httpHeader);
   }
+  getAppointment(appointmentId: number): Observable<Appointment> {
+    return this.httpClient.get<Appointment>(this.endpoint + `/${appointmentId}`,  this.httpHeader);
+  }
 
 
 }

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AppointmentService} from '../../services/Appointment.service';
 import {Router} from '@angular/router';
-import {ContactNumberValidator, DateTimeValidator, IdCardValidator} from '../validators/appointment.validator';
+import {ContactNumberValidator, DateTimeValidator, IdCardValidator} from '../../validators/appointment.validator';
 import {Appointment} from '../../dto/Appointment.dto';
 import {AppointmentAddUpdate} from '../../dto/Appointment-Add-Update.dto';
 

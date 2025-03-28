@@ -40,8 +40,8 @@
         <td>{{appointment.appointmentDate}} {{appointment.appointmentTime}}</td>
         <td>{{appointment.appointmentDuration}}</td>
         <td class="text-center">
-          <button class="btn btn-sm btn-info me-1">View</button>
-          <button class="btn btn-sm btn-warning me-1">Edit</button>
+          <button class="btn btn-sm btn-info me-1" [routerLink]="['/appointment', appointment.appointmentId]">View</button>
+          <button class="btn btn-sm btn-warning me-1"  >Edit</button>
           <button class="btn btn-sm btn-danger">Delete</button>
         </td>
       </tr>
