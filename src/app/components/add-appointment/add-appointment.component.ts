@@ -45,8 +45,8 @@ export class AddAppointmentComponent implements OnInit {
     console.log(JSON.stringify(this.appointmentForm.value));
     const AppointmentToAdd: AppointmentAddUpdate = {...formValue, appointmentDate: formattedDate, appointmentTime: timeFormatted}
     console.log(AppointmentToAdd);
-    this.appointmentService.addAppointment(AppointmentToAdd).subscribe((addedProduct: Appointment) => {
-      console.log(JSON.stringify(addedProduct));
+    this.appointmentService.addAppointment(AppointmentToAdd).subscribe((addedAppointment: Appointment) => {
+      console.log(JSON.stringify(addedAppointment));
       this.router.navigate(["/list-appointments"]);
     });
   }

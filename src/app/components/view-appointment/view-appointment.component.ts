@@ -1,10 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Appointment} from '../../dto/Appointment.dto';
 import {AppointmentService} from '../../services/Appointment.service';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-view-appointment',
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './view-appointment.component.html',
   styleUrl: './view-appointment.component.css'
 })

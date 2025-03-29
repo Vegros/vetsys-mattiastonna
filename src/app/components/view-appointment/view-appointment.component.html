@@ -64,8 +64,15 @@
           <label class="fw-semibold">Vet Notes</label>
           <div>{{ appointment.vetNotes }}</div>
         </div>
+
+      </div>
+      <div class="d-flex justify-content-end mt-4">
+        <button class="btn btn-secondary me-2"  [routerLink]="['/list-appointments']">Back</button>
+        <button class="btn btn-warning"  [routerLink]="['/edit-appointment', appointment.appointmentId]">Edit</button>
       </div>
     </div>
   </div>
 </div>
+
+
 }
