@@ -31,8 +31,13 @@ export class AddAppointmentComponent implements OnInit {
       ownerSurname: ['', [Validators.required]],
       patientName: ['', [Validators.required]],
       reasonForAppointment: ['', [Validators.required]],
-      vetNotes: ['', [Validators.required]],
+      vetNotes: [''],
     })
+
+    if (localStorage.getItem('role') === 'RECEPTIONIST') {
+      this.appointmentForm.get('vetNotes')?.disable();
+    }
+
   }
   submitForm() {
     const formValue = this.appointmentForm.value;
@@ -55,4 +60,6 @@ export class AddAppointmentComponent implements OnInit {
     let control = this.appointmentForm.get(controlName);
     return ((control!.touched || control!.dirty) && control!.errors);
   }
+
+  protected readonly localStorage = localStorage;
 }

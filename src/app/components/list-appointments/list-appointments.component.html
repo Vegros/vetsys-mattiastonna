@@ -41,8 +41,8 @@
         <td>{{appointment.appointmentDuration}}</td>
         <td class="text-center">
           <button class="btn btn-sm btn-info me-1" [routerLink]="['/appointment', appointment.appointmentId]">View</button>
-          <button class="btn btn-sm btn-warning me-1"  [routerLink]="['/edit-appointment', appointment.appointmentId]">Edit</button>
-          <button class="btn btn-sm btn-danger">Delete</button>
+          <button class="btn btn-sm btn-warning me-1" [disabled]="isAppointmentInPast(appointment.appointmentDate + ' ' + appointment.appointmentTime)"  [routerLink]="['/edit-appointment', appointment.appointmentId]">Edit</button>
+          <button class="btn btn-sm btn-danger" [disabled]="isAdmin()" (click)="deleteItem(appointment.appointmentId)">Delete</button>
         </td>
       </tr>
       }

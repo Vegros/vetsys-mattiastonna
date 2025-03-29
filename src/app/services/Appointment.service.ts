@@ -36,5 +36,9 @@ export class AppointmentService {
     return this.httpClient.put<Appointment>(this.endpoint + `/${appointmentId}`,appointment,  this.httpHeader);
   }
 
+  deleteAppointment(appointmentId: number) {
+    return this.httpClient.delete<void>(this.endpoint + `/${appointmentId}`,  this.httpHeader);
+  }
+
 
 }

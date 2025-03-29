@@ -41,18 +41,46 @@ export class EditAppointmentComponent implements OnInit{
         ownerSurname: [this.appointment.ownerSurname, [Validators.required]],
         patientName: [this.appointment.patientName, [Validators.required]],
         reasonForAppointment: [this.appointment.reasonForAppointment, [Validators.required]],
-        vetNotes: [this.appointment.vetNotes, [Validators.required]],
+        vetNotes: [this.appointment.vetNotes ],
       })
+      if(this.isAppointmentInPast(this.appointment.appointmentDate + " " + this.appointment.appointmentTime)){
+         this.appointmentForm.get('appointmentDateTime')?.disable();
+         if(localStorage.getItem('role') === 'RECEPTIONIST'){
+           this.router.navigate(['/list-appointment']);
+         }
+      }
+      if (localStorage.getItem('role') === 'RECEPTIONIST') {
+        this.appointmentForm.get('vetNotes')?.disable();
+      }
     });
+    if(!this.appointment){
+      this.router.navigate(['/list-appointment']);
+    }
 
   }
+
+
+
+  isAppointmentInPast(dateTimeStr: string): boolean {
+      console.log(dateTimeStr);
+      const [datePart, timePart] = dateTimeStr.split(' ');
+      const [day, month, year] = datePart.split('/');
+      const [hours, minutes] = timePart.split(':');
+
+      const parsedDate = new Date(+year, +month - 1, +day, +hours, +minutes);
+      const now = new Date();
+
+      return parsedDate < now;
+    }
+
+
 
   ngOnInit(): void {
     this.getAppointment();
 
   }
   UpdateAppointment(): void {
-    const formValue = this.appointmentForm.value;
+    const formValue = this.appointmentForm.getRawValue();
     const [date, time] = formValue.appointmentDateTime.split('T');
     const [year, month, day] = date.split('-');
     const formattedDate = `${day}/${month}/${year}`;

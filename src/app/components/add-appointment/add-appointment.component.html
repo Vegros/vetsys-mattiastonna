@@ -142,7 +142,7 @@
 
             <div class="col-12">
               <label for="vetNotes" class="form-label">Vet Notes</label>
-              <input type="text" class="form-control" id="vetNotes" formControlName="vetNotes" placeholder="Enter vet notes">
+              <input  type="text" class="form-control" id="vetNotes" formControlName="vetNotes" placeholder="Enter vet notes">
               @if (shouldProcessControlValidationMessages("vetNotes")) {
                 <div class="text-danger small mt-1">
                   @if (appointmentForm.get("vetNotes")!.hasError("required")) {
