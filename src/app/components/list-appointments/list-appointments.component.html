@@ -25,11 +25,11 @@
         <th>Owner Surname</th>
         <th>Appointment Date & Time</th>
         <th>Appointment Duration</th>
+        <th>Status</th>
         <th class="text-center">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <!-- Example row -->
       @for (appointment of appointments; track appointment.appointmentId) {
       <tr>
         <td>{{appointment.appointmentId}}</td>
@@ -39,6 +39,11 @@
         <td>{{appointment.ownerSurname}}</td>
         <td>{{appointment.appointmentDate}} {{appointment.appointmentTime}}</td>
         <td>{{appointment.appointmentDuration}}</td>
+        @if ((appointment.appointmentDate + ' ' + appointment.appointmentTime) | generateStatus) {
+          <td><span class="badge bg-danger">Past</span></td>
+        } @else {
+        <td><span class="badge bg-success">Upcoming</span> </td>
+        }
         <td class="text-center">
           <button class="btn btn-sm btn-info me-1" [routerLink]="['/appointment', appointment.appointmentId]">View</button>
           <button class="btn btn-sm btn-warning me-1" [disabled]="isAppointmentInPast(appointment.appointmentDate + ' ' + appointment.appointmentTime)"  [routerLink]="['/edit-appointment', appointment.appointmentId]">Edit</button>

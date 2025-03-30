@@ -3,12 +3,14 @@ import {Appointment} from '../../dto/Appointment.dto';
 import {AppointmentService} from '../../services/Appointment.service';
 import {FormsModule} from '@angular/forms';
 import {RouterLink} from '@angular/router';
+import {generateStatusPipe} from '../../pipes/status.pipe';
 
 @Component({
   selector: 'app-list-appointments',
   imports: [
     FormsModule,
-    RouterLink
+    RouterLink,
+    generateStatusPipe
   ],
   templateUrl: './list-appointments.component.html',
   styleUrl: './list-appointments.component.css'
