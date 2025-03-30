@@ -6,7 +6,7 @@
       <button class="btn btn-success me-2">
         Export to Excel
       </button>
-      <button class="btn btn-danger">
+      <button class="btn btn-danger" (click)="exportTableToPDF()">
         Export to PDF
       </button>
     </div>
@@ -14,7 +14,7 @@
 
 
   @if (appointments.length > 0) {
-  <div class="table-responsive">
+  <div #appointmentTable class="table-responsive">
     <table class="table table-striped table-hover align-middle">
       <thead class="table-primary">
       <tr>
