@@ -3,7 +3,7 @@
 
   <div class="d-flex justify-content-between mb-3">
     <div>
-      <button class="btn btn-success me-2">
+      <button class="btn btn-success me-2" (click)="exportTableToExcel()">
         Export to Excel
       </button>
       <button class="btn btn-danger" (click)="exportTableToPDF()">
@@ -26,7 +26,7 @@
         <th>Appointment Date & Time</th>
         <th>Appointment Duration</th>
         <th>Status</th>
-        <th class="text-center">Actions</th>
+        <th class="text-center no-print">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -44,7 +44,7 @@
         } @else {
         <td><span class="badge bg-success">Upcoming</span> </td>
         }
-        <td class="text-center">
+        <td class="text-center no-print" >
           <button class="btn btn-sm btn-info me-1" [routerLink]="['/appointment', appointment.appointmentId]">View</button>
           <button class="btn btn-sm btn-warning me-1" [disabled]="isAppointmentInPast(appointment.appointmentDate + ' ' + appointment.appointmentTime)"  [routerLink]="['/edit-appointment', appointment.appointmentId]">Edit</button>
           <button class="btn btn-sm btn-danger" [disabled]="isAdmin()" (click)="deleteItem(appointment.appointmentId)">Delete</button>
