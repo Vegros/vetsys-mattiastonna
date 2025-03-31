@@ -8,6 +8,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import XLSX from "xlsx-js-style"
 import { saveAs } from 'file-saver';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-appointments',
@@ -63,12 +64,29 @@ export class ListAppointmentsComponent implements OnInit {
 
 
   deleteItem(id: number) {
-    this.appointmentService.deleteAppointment(id).subscribe({
-      next: () => {
-        alert('Appointment deleted successfully!');
-        this.initialiseAppointments();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This appointment will be permanently deleted.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.appointmentService.deleteAppointment(id).subscribe({
+          next: () => {
+            Swal.fire('Deleted!', 'The appointment has been removed.', 'success');
+            this.initialiseAppointments();
+          }
+        });
+
+
+      }
+      else{
+        Swal.fire('Oops...', 'Appointment deletion is canceled!', 'error');
       }
     });
+
   }
 
 

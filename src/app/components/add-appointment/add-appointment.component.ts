@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {ContactNumberValidator, DateTimeValidator, IdCardValidator} from '../../validators/appointment.validator';
 import {Appointment} from '../../dto/Appointment.dto';
 import {AppointmentAddUpdate} from '../../dto/Appointment-Add-Update.dto';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-appointment',
@@ -53,6 +54,8 @@ export class AddAppointmentComponent implements OnInit {
     this.appointmentService.addAppointment(AppointmentToAdd).subscribe((addedAppointment: Appointment) => {
       console.log(JSON.stringify(addedAppointment));
       this.router.navigate(["/list-appointments"]);
+      Swal.fire('Success!', 'Appointment created successfully.', 'success');
+
     });
   }
 

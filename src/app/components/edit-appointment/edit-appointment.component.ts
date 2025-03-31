@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {ContactNumberValidator, DateTimeValidator, IdCardValidator} from '../../validators/appointment.validator';
 import {AppointmentAddUpdate} from '../../dto/Appointment-Add-Update.dto';
 import {Appointment} from '../../dto/Appointment.dto';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-appointment',
@@ -26,37 +27,51 @@ export class EditAppointmentComponent implements OnInit{
   }
 
   getAppointment() {
-    this.appointmentService.getAppointment(this.id).subscribe((response: Appointment) => {
-      this.appointment = response;
-      const [day, month, year] = this.appointment.appointmentDate.split('/');
-      const formattedTime = this.appointment.appointmentTime.length === 5 ? this.appointment.appointmentTime : this.appointment.appointmentTime.slice(0, 5);
-      const datetime = `${year}-${month}-${day}T${formattedTime}`
-      this.appointmentForm = this.formBuilder.group({
-        animalType : [this.appointment.animalType, [Validators.required]],
-        appointmentDateTime: [datetime, [Validators.required, DateTimeValidator()]],
-        appointmentDuration: [this.appointment.appointmentDuration, [Validators.required]],
-        ownerContactNumber: [this.appointment.ownerContactNumber, [Validators.required, ContactNumberValidator()]],
-        ownerIdCardNumber : [this.appointment.ownerIdCardNumber, [Validators.required, IdCardValidator()]],
-        ownerName: [this.appointment.ownerName, [Validators.required]],
-        ownerSurname: [this.appointment.ownerSurname, [Validators.required]],
-        patientName: [this.appointment.patientName, [Validators.required]],
-        reasonForAppointment: [this.appointment.reasonForAppointment, [Validators.required]],
-        vetNotes: [this.appointment.vetNotes ],
-      })
-      if(this.isAppointmentInPast(this.appointment.appointmentDate + " " + this.appointment.appointmentTime)){
-         this.appointmentForm.get('appointmentDateTime')?.disable();
-         if(localStorage.getItem('role') === 'RECEPTIONIST'){
-           this.router.navigate(['/list-appointment']);
-         }
-      }
-      if (localStorage.getItem('role') === 'RECEPTIONIST') {
-        this.appointmentForm.get('vetNotes')?.disable();
+    this.appointmentService.getAppointment(this.id).subscribe({
+      next: (response: Appointment) => {
+        if (!response) {
+          this.router.navigate(['/list-appointment']);
+          return;
+        }
+
+        this.appointment = response;
+
+        const [day, month, year] = this.appointment.appointmentDate.split('/');
+        const formattedTime = this.appointment.appointmentTime.length === 5
+          ? this.appointment.appointmentTime
+          : this.appointment.appointmentTime.slice(0, 5);
+        const datetime = `${year}-${month}-${day}T${formattedTime}`;
+
+        this.appointmentForm = this.formBuilder.group({
+          animalType: [this.appointment.animalType, [Validators.required]],
+          appointmentDateTime: [datetime, [Validators.required, DateTimeValidator()]],
+          appointmentDuration: [this.appointment.appointmentDuration, [Validators.required]],
+          ownerContactNumber: [this.appointment.ownerContactNumber, [Validators.required, ContactNumberValidator()]],
+          ownerIdCardNumber: [this.appointment.ownerIdCardNumber, [Validators.required, IdCardValidator()]],
+          ownerName: [this.appointment.ownerName, [Validators.required]],
+          ownerSurname: [this.appointment.ownerSurname, [Validators.required]],
+          patientName: [this.appointment.patientName, [Validators.required]],
+          reasonForAppointment: [this.appointment.reasonForAppointment, [Validators.required]],
+          vetNotes: [this.appointment.vetNotes],
+        });
+
+        if (this.isAppointmentInPast(this.appointment.appointmentDate + " " + this.appointment.appointmentTime)) {
+          this.appointmentForm.get('appointmentDateTime')?.disable();
+
+          if (localStorage.getItem('role') === 'RECEPTIONIST') {
+            this.router.navigate(['/list-appointment']);
+          }
+        }
+
+        if (localStorage.getItem('role') === 'RECEPTIONIST') {
+          this.appointmentForm.get('vetNotes')?.disable();
+        }
+      },
+      error: (err) => {
+        this.router.navigate(['/list-appointment']);
+        Swal.fire('Not Found', 'Appointment not found or server error', 'error');
       }
     });
-    if(!this.appointment){
-      this.router.navigate(['/list-appointment']);
-    }
-
   }
 
 
@@ -93,6 +108,7 @@ export class EditAppointmentComponent implements OnInit{
     this.appointmentService.updateAppointment(this.id, AppointmentToAdd).subscribe((addedAppointment: Appointment) => {
       console.log(JSON.stringify(addedAppointment));
       this.router.navigate(["/list-appointments"]);
+      Swal.fire('Success!', 'Appointment updated successfully.', 'success');
     });
   }
 
