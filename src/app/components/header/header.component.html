@@ -6,7 +6,17 @@
   </button>
 
   <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav align-items-center">
+      <li class="nav-item me-3">
+        @if (localStorage.getItem('username') != null){
+        <span class="nav-link text-light" >
+          <i class="bi bi-person-circle me-1"></i>
+          <span class="badge bg-light text-primary fw-semibold px-3 py-2 rounded-pill">
+            {{ localStorage.getItem('username') }}
+          </span>
+        </span>
+        }
+      </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/add-appointment">Add Appointment</a>
       </li>
@@ -14,7 +24,7 @@
         <a class="nav-link" routerLink="/list-appointments">List Appointments</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-warning"  (click)="logout()">Sign Out</a>
+        <a class="nav-link text-warning" (click)="logout()">Sign Out</a>
       </li>
     </ul>
   </div>

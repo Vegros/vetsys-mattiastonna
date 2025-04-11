@@ -6,7 +6,7 @@ export class Appointment {
   private _animalType: string;
   private _ownerIdCardNumber: string;
   private _ownerName: string;
-  private _ownerSurname: number;
+  private _ownerSurname: string;
   private _ownerContactNumber: number;
   private _appointmentDate: string;
   private _appointmentTime: string;
@@ -20,7 +20,7 @@ export class Appointment {
     animalType: string,
     ownerIdCardNumber: string,
     ownerName: string,
-    ownerSurname: number,
+    ownerSurname: string,
     ownerContactNumber: number,
     appointmentDate: string,
     appointmentTime: string,
@@ -85,11 +85,11 @@ export class Appointment {
   set ownerContactNumber(value: number) {
     this._ownerContactNumber = value;
   }
-  get ownerSurname(): number {
+  get ownerSurname(): string {
     return this._ownerSurname;
   }
 
-  set ownerSurname(value: number) {
+  set ownerSurname(value: string) {
     this._ownerSurname = value;
   }
   get ownerName(): string {

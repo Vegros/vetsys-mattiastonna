@@ -18,6 +18,9 @@ export class HeaderComponent {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('username');
     this.router.navigate(['/login']);
   }
+
+  protected readonly localStorage = localStorage;
 }

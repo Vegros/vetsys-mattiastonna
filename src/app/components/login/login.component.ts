@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
     this.loginService.login(login).subscribe((status: StatusDto) => {
       localStorage.setItem("token", status.jwtToken);
       localStorage.setItem("role", status.role);
+      localStorage.setItem("username", status.username)
       console.log(JSON.stringify(status));
 
       this.router.navigate(["/home"]);

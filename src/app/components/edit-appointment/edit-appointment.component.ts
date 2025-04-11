@@ -63,7 +63,7 @@ export class EditAppointmentComponent implements OnInit{
           }
         }
 
-        if (localStorage.getItem('role') === 'RECEPTIONIST') {
+        if (localStorage.getItem('role') === 'RECEPTIONIST'  || localStorage.getItem('role') === 'ADMIN') {
           this.appointmentForm.get('vetNotes')?.disable();
         }
       },

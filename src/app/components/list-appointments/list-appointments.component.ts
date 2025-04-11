@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import XLSX from "xlsx-js-style"
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
+import {AppointmentExportDto} from '../../dto/AppointmentExport.dto';
 
 @Component({
   selector: 'app-list-appointments',
@@ -115,59 +116,72 @@ export class ListAppointmentsComponent implements OnInit {
 
 
   exportTableToExcel() {
-    const element = this.appointmentTable.nativeElement;
+    const appointmentsDto: AppointmentExportDto[] = this.appointments.map((a, index) =>
+      new AppointmentExportDto(
+        a.appointmentId,
+        a.patientName,
+        a.animalType,
+        `${a.ownerName} ${a.ownerSurname}`,
+        a.ownerIdCardNumber,
+        a.ownerContactNumber,
+        a.appointmentDate,
+        +a.appointmentDuration,
+        a.reasonForAppointment,
+        a.vetNotes ? a.vetNotes : "",
+        this.getStatus(a.appointmentDate + ' ' + a.appointmentTime) ? 'Past' : 'Upcoming'
+      )
+    );
 
-    const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, {
-      raw: false
-    });
-
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
+      appointmentsDto.map(dto => dto.Export())
+    );
     const range = XLSX.utils.decode_range(worksheet['!ref']!);
-    const columnCount = range.e.c;
-    const rowCount = range.e.r;
-
     let statusColIndex = -1;
-    for (let col = 0; col <= columnCount; col++) {
-      const headerCell = XLSX.utils.encode_cell({ r: 0, c: col });
-      const headerValue = worksheet[headerCell]?.v?.toString().trim().toLowerCase();
 
-      if (headerValue === 'status') {
+    for (let col = 0; col <= range.e.c; col++) {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col });
+      const cell = worksheet[cellAddress];
+      if (cell?.v?.toString().trim().toLowerCase() === 'status') {
         statusColIndex = col;
         break;
       }
     }
-
     if (statusColIndex !== -1) {
-      for (let rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
-        const statusCellRef = XLSX.utils.encode_cell({ r: rowIndex, c: statusColIndex });
-        const statusValue = worksheet[statusCellRef]?.v?.toString().trim().toLowerCase();
+      for (let row = 1; row <= range.e.r; row++) {
+        const statusCellAddress = XLSX.utils.encode_cell({ r: row, c: statusColIndex });
+        const statusValue = worksheet[statusCellAddress]?.v;
 
-        if (!statusValue) continue;
+        if (statusValue?.toLowerCase() === 'past') {
+          for (let col = 0; col <= range.e.c; col++) {
+            const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+            const cell = worksheet[cellAddress];
 
-        const isUpcoming = statusValue === 'upcoming';
-        const fillColor = isUpcoming ? 'D4EDDA' : 'F8D7DA'; // Green or Red
+            if (cell) {
+              cell.s = {
+                fill: { fgColor: { rgb: 'F8D7DA' } }, // light red
+                font: { color: { rgb: '000000' } },
+                alignment: { horizontal: 'left' }
+              };
+            }
+          }
+        }
+        else{
+            for (let col = 0; col <= range.e.c; col++) {
+              const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+              const cell = worksheet[cellAddress];
 
-        for (let colIndex = 0; colIndex <= columnCount; colIndex++) {
-          const cellRef = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
-          const cell = worksheet[cellRef];
-          if (!cell) continue;
-
-          cell.s = {
-            fill: { fgColor: { rgb: fillColor } },
-            font: { color: { rgb: '000000' } },
-            alignment: { horizontal: 'left' }
-          };
+              if (cell) {
+                cell.s = {
+                  fill: { fgColor: { rgb: 'C6EFCE' } },
+                  font: { color: { rgb: '000000' } },
+                  alignment: { horizontal: 'left' }
+                };
+              }
+            }
         }
       }
     }
 
-    const lastCol = range.e.c;
-    for (let row = range.s.r; row <= range.e.r; row++) {
-      const cellAddress = XLSX.utils.encode_cell({ r: row, c: lastCol });
-      delete worksheet[cellAddress];
-    }
-
-    range.e.c = lastCol - 1;
-    worksheet['!ref'] = XLSX.utils.encode_range(range);
 
     const workbook: XLSX.WorkBook = {
       Sheets: { 'Appointments': worksheet },
@@ -176,7 +190,8 @@ export class ListAppointmentsComponent implements OnInit {
 
     const excelBuffer: any = XLSX.write(workbook, {
       bookType: 'xlsx',
-      type: 'array'
+      type: 'array',
+      cellStyles: true
     });
 
     const blob = new Blob([excelBuffer], {
@@ -184,5 +199,15 @@ export class ListAppointmentsComponent implements OnInit {
     });
 
     saveAs(blob, 'appointments.xlsx');
+  }
+
+  private getStatus(appointmentDateTime: any) {
+    const [datePart, timePart] = appointmentDateTime.split(' ');
+    const [day, month, year] = datePart.split('/');
+    const [hours, minutes] = timePart.split(':');
+
+    const parsedDate = new Date(+year, +month - 1, +day, +hours, +minutes);
+    const now = new Date();
+    return parsedDate < now
   }
 }

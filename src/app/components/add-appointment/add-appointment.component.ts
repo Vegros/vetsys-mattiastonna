@@ -17,7 +17,6 @@ import Swal from 'sweetalert2';
 })
 export class AddAppointmentComponent implements OnInit {
   appointmentForm !: FormGroup;
-
   constructor(private formBuilder: FormBuilder, private appointmentService: AppointmentService, private router: Router) {
 
   }
@@ -32,12 +31,7 @@ export class AddAppointmentComponent implements OnInit {
       ownerSurname: ['', [Validators.required]],
       patientName: ['', [Validators.required]],
       reasonForAppointment: ['', [Validators.required]],
-      vetNotes: [''],
     })
-
-    if (localStorage.getItem('role') === 'RECEPTIONIST') {
-      this.appointmentForm.get('vetNotes')?.disable();
-    }
 
   }
   submitForm() {
@@ -64,5 +58,4 @@ export class AddAppointmentComponent implements OnInit {
     return ((control!.touched || control!.dirty) && control!.errors);
   }
 
-  protected readonly localStorage = localStorage;
 }

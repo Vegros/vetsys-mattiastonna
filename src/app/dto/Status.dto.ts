@@ -1,13 +1,22 @@
 
 export class StatusDto {
+  get username(): string {
+    return this._username;
+  }
+
+  set username(value: string) {
+    this._username = value;
+  }
   private _jwtToken: string;
   private _message: string;
+  private _username: string;
   private _role: string;
 
-  constructor(jwtToken: string, message: string, role: string) {
+  constructor(jwtToken: string, message: string, role: string, username: string) {
     this._jwtToken = jwtToken;
     this._message = message;
     this._role = role;
+    this._username = username
   }
   get role(): string {
     return this._role;
