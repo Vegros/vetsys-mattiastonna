@@ -158,7 +158,7 @@ export class ListAppointmentsComponent implements OnInit {
 
             if (cell) {
               cell.s = {
-                fill: { fgColor: { rgb: 'F8D7DA' } }, // light red
+                fill: { fgColor: { rgb: 'F8D7DA' } },
                 font: { color: { rgb: '000000' } },
                 alignment: { horizontal: 'left' }
               };

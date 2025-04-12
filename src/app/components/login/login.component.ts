@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/Auth.service';
 import { AuthDto } from '../../dto/Auth.dto';
 import {StatusDto} from '../../dto/Status.dto';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -34,10 +35,11 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("role", status.role);
       localStorage.setItem("username", status.username)
       console.log(JSON.stringify(status));
-
       this.router.navigate(["/home"]);
+      Swal.fire('Success!', 'Logged in successfully.', 'success');
     },error =>{
       console.error("Login failed", error);
+      Swal.fire('Incorrect username or password!', 'Logged in Unsuccessfully.', 'error');
     });
   }
 
